@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIP Calculator - The Ultimate Android Utility</title>
+  <meta name="description" content="Download the DIP Calculator, a powerful calculator, secure file vault, and all-in-one utility suite for Android. Developed by DEEPAK.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #00aaff;
+      --secondary-color: #ffaa00;
+      --bg-dark: #121828;
+      --bg-light: #1f2940;
+      --text-light: #f0f8ff;
+      --text-muted: #a0aec0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    
+    /* --- Animations --- */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* --- Header & Hero --- */
+    .hero {
+      background: linear-gradient(160deg, var(--bg-dark) 0%, #1a2a4c 100%);
+      padding: 60px 0;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .app-logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 170, 255, 0.2);
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .hero .subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+    .cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .cta-btn {
+      display: inline-block;
+      padding: 15px 35px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+    .cta-btn.primary {
+      background-color: var(--primary-color);
+      box-shadow: 0 5px 20px rgba(0, 170, 255, 0.3);
+    }
+    .cta-btn.primary:hover { transform: translateY(-3px); background-color: #00bfff; }
+    .cta-btn.secondary { border: 2px solid var(--primary-color); }
+    .cta-btn.secondary:hover { background-color: var(--primary-color); }
+
+    /* --- Section Styling --- */
+    .section { padding: 80px 0; }
+    .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; }
+    .section-title span { color: var(--primary-color); }
+    
+    /* --- Features Grid --- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    .feature-card {
+      background-color: var(--bg-light);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      border: 1px solid #2a3b5a;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+    .feature-card .icon { font-size: 3rem; margin-bottom: 15px; display: inline-block; }
+    .feature-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+    .feature-card p { color: var(--text-muted); }
+
+    /* --- Gallery Section --- */
+    .gallery-section { background-color: var(--bg-light); border-top: 1px solid #2a3b5a; border-bottom: 1px solid #2a3b5a; }
+    .screenshots-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px 0;
+      overflow-x: auto;
+      -ms-overflow-style: none; scrollbar-width: none;
+    }
+    .screenshots-container::-webkit-scrollbar { display: none; }
+    .screenshot {
+      flex: 0 0 250px;
+      height: 500px;
+      background-color: #34495e;
+      border-radius: 20px;
+      border: 2px solid #4a6582;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .screenshot img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* --- Security Section --- */
+    .security-content {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+    .security-text { flex: 1; }
+    .security-text h3 { font-size: 1.5rem; margin-bottom: 10px; }
+    .security-text ul { list-style: none; padding-left: 0; }
+    .security-text li { margin-bottom: 15px; padding-left: 30px; position: relative; }
+    .security-text li::before { content: '✓'; color: var(--accent-success); position: absolute; left: 0; font-weight: bold; }
+    .security-visual { flex: 1; text-align: center; }
+    .security-visual .icon { font-size: 8rem; color: var(--primary-color); filter: drop-shadow(0 0 15px var(--primary-color)); }
+
+    /* --- Footer --- */
+    .footer {
+      background-color: var(--bg-light);
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid #2a3b5a;
+    }
+    .footer p { margin-bottom: 20px; color: var(--text-muted); }
+    .footer .social-links { margin-bottom: 20px; }
+    .footer .social-links a { margin: 0 15px; font-size: 1.5rem; color: var(--text-muted); transition: color 0.3s ease; }
+    .footer .social-links a:hover { color: var(--primary-color); }
+
+    @media (max-width: 768px) {
+      .security-content { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  
+  <header class="hero">
+    <div class="container">
+      <img src="https://i.postimg.cc/Ghj1bgzj/IMG-20250717-WA0014.jpg" alt="DIP Calculator Logo" class="app-logo fade-in">
+      <h1 class="fade-in" style="transition-delay: 0.1s;">More Than a Calculator. <br>Your Private Utility.</h1>
+      <p class="subtitle fade-in" style="transition-delay: 0.2s;">
+        DIP Calculator combines a powerful, professional calculator with a suite of essential tools and a high-security vault to hide your private photos, videos, and files.
+      </p>
+      <div class="cta-buttons fade-in" style="transition-delay: 0.3s;">
+        <a href="https://drive.usercontent.google.com/download?id=1hNcgz_-leIGHRYSZ3_HkXsKb5dZuk5oZ&export=download&authuser=7" class="cta-btn primary">Download APK (G-Drive)</a>
+        <a href="https://www.mediafire.com/file/davw4nm7wp18tdo/DIP+Calculator+.apk/file" class="cta-btn secondary">Download APK (MediaFire)</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="features" class="section">
+      <div class="container">
+        <h2 class="section-title fade-in">An Entire <span>Toolbox</span> in Your Pocket</h2>
+        <div class="features-grid">
+          <div class="feature-card fade-in">
+            <span class="icon">🔒</span><h3>Secure File Vault</h3>
+            <p>Hide photos, videos, and any file behind a secret calculation. Your data is stored securely on your device, not in the cloud.</p>
+          </div>
+          <div class="feature-card fade-in" style="transition-delay: 0.1s;">
+            <span class="icon">🧮</span><h3>Advanced Calculator</h3>
+            <p>A sleek, 3D-themed calculator that fits any screen and feels great to use, with all the functions you need for daily calculations.</p>
+          </div>
+          <div class="feature-card fade-in" style="transition-delay: 0.2s;">
+            <span class="icon">🗓️</span><h3>Holiday Calendar</h3>
+            <p>An integrated calendar pre-loaded with the official 2025 BEU holiday schedule, so you never miss an important date.</p>
+          </div>
+          <div class="feature-card fade-in" style="transition-delay: 0.3s;">
+            <span class="icon">✍️</span><h3>Font Generator</h3>
+            <p>Create stylish text for your social media profiles with a built-in generator for multiple fancy font styles.</p>
+          </div>
+          <div class="feature-card fade-in" style="transition-delay: 0.4s;">
+            <span class="icon">✅</span><h3>To-Do List</h3>
+            <p>Keep track of your tasks and assignments with a simple yet powerful to-do list manager, saved right in the app.</p>
+          </div>
+          <div class="feature-card fade-in" style="transition-delay: 0.5s;">
+            <span class="icon">🌐</span><h3>Live Translator</h3>
+            <p>Break language barriers with a real-time translator for text, supporting dozens of languages on the fly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-section">
+      <div class="container">
+        <h2 class="section-title fade-in">See It In <span>Action</span></h2>
+      </div>
+      <div class="screenshots-container fade-in">
+        <!-- Replace with actual screenshot images -->
+        <div class="screenshot"><img src="https://i.postimg.cc/7LbvMg08/Screenshot-2025-07-17-13-33-41-31-9b00e56b887c2bae5c1c777f9d722899.jpg" alt="Calculator Interface"></div>
+        <div class="screenshot"><img src="https://i.postimg.cc/x83FSCM3/Screenshot-2025-07-17-13-33-57-14-9b00e56b887c2bae5c1c777f9d722899.jpg" alt="Vault Interface"></div>
+        <div class="screenshot"><img src="https://i.postimg.cc/SRht582K/Screenshot-2025-07-17-13-34-01-05-9b00e56b887c2bae5c1c777f9d722899.jpg" alt="Calendar View"></div>
+        <div class="screenshot"><img src="https://i.postimg.cc/0Nh4Yh9D/Screenshot-2025-07-17-13-34-19-76-9b00e56b887c2bae5c1c777f9d722899.jpg
+
+https://i.postimg.cc/26pHbvxx/Screenshot-2025-07-17-13-34-27-88-9b00e56b887c2bae5c1c777f9d722899.jpg
+" alt="Font Generator"></div>
+        <div class="screenshot"><img src="https://i.postimg.cc/fyC5rPQH/Screenshot-2025-07-17-13-34-45-27-9b00e56b887c2bae5c1c777f9d722899.jpg" alt="To-Do List"></div>
+      </div>
+    </section>
+
+    <section id="security" class="section">
+      <div class="container">
+        <div class="security-content">
+          <div class="security-text fade-in">
+            <h2 class="section-title" style="text-align:left; margin-bottom: 20px;">Your <span>Privacy</span>, Our Priority</h2>
+            <ul>
+              <li><strong>On-Device Storage:</strong> All your hidden files and personal data are stored exclusively on your device's local storage.</li>
+              <li><strong>No Cloud Upload:</strong> We respect your privacy. The app never uploads your files or personal information to any server.</li>
+              <li><strong>Secret Code Protection:</strong> The vault is inaccessible without your unique calculation. With a security question, you can recover access if you forget.</li>
+            </ul>
+          </div>
+          <div class="security-visual fade-in" style="transition-delay: 0.2s;">
+            <span class="icon">🛡️</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="download" class="section" style="background: var(--bg-light);">
+      <div class="container" style="text-align: center;">
+        <h2 class="section-title fade-in">Ready to Upgrade Your Calculator?</h2>
+        <p class="subtitle fade-in" style="transition-delay: 0.1s;">Get all these powerful features in one free, beautifully designed application.</p>
+        <div class="cta-buttons fade-in" style="transition-delay: 0.2s;">
+          <a href="https://drive.usercontent.google.com/download?id=1hNcgz_-leIGHRYSZ3_HkXsKb5dZuk5oZ&export=download&authuser=7" class="cta-btn primary">Download APK (G-Drive)</a>
+          <a href="https://www.mediafire.com/file/davw4nm7wp18tdo/DIP+Calculator+.apk/file" class="cta-btn secondary">Download APK (MediaFire)</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>DEVELOPED WITH ❤️ BY DEEPAK</p>
+      <div class="social-links">
+        <a href="https://instagram.com/naturelensbyabhi" target="_blank" title="Instagram">I</a>
+        <a href="https://t.me/lost_life2" target="_blank" title="Telegram">T</a>
+        <a href="mailto:your_email@example.com" title="Email">M</a>
+      </div>
+      <p>&copy; 2025 DIP Calculator. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Fade-in on scroll animation
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = {
+      threshold: 0.2,
+      rootMargin: "0px 0px -50px 0px"
+    };
+
+    const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          return;
+        } else {
+          entry.target.classList.add('is-visible');
+          appearOnScroll.unobserve(entry.target);
+        }
+      });
+    }, appearOptions);
+
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
+
+</body>
+</html>
